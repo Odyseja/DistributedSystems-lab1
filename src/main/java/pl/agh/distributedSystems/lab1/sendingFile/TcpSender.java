@@ -47,7 +47,7 @@ public class TcpSender {
                 }
             }
         } catch (IOException e) {
-            log.error("Socket error: {}", e);
+            System.out.println("Socket error: "+e);
         }
     }
 }

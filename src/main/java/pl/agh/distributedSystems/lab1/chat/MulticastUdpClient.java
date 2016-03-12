@@ -49,7 +49,7 @@ public class MulticastUdpClient {
                 sendMessage(message, socket, groupAddress, port);
             }
 		} catch (IOException e) {
-			log.error(e.getMessage());
+			System.out.println(e.getMessage());
 		} finally {
             executor.shutdown();
         }
