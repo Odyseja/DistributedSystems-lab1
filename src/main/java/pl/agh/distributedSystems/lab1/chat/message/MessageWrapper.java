@@ -54,7 +54,6 @@ public class MessageWrapper {
         logger.debug("Wrapped message: {}", message.toString());
         return buffer.array();
     }
-
     public static Message unwrapMessageFromByteArray(byte[] givenDatagram) {
         logger.debug("Datagram to unwrap length: {}", givenDatagram.length);
         int fieldSize;
@@ -68,23 +67,25 @@ public class MessageWrapper {
 
         fieldSize = buffer.getInt();
         logger.debug("Nick size: {}", fieldSize);
-        nickArr = new byte[fieldSize];
-        buffer.get(nickArr, 0, fieldSize);
+        nickArr=readField(fieldSize, buffer);
 
         fieldSize = buffer.getInt();
         logger.debug("Data size: {}", fieldSize);
-        dataArr = new byte[fieldSize];
-        buffer.get(dataArr, 0, fieldSize);
+        dataArr = readField(fieldSize, buffer);
 
         fieldSize = 19;
-        dateArr = new byte[fieldSize];
-        buffer.get(dateArr, 0, fieldSize);
+        dateArr = readField(fieldSize, buffer);
         checksum = buffer.getLong();
 
         Message message = new Message(new String(nickArr), new String(dataArr), new String(dateArr), checksum);
         message.setDatagram(givenDatagram);
         logger.debug("Unwrapped message: {}", message.toString());
         return message;
+    }
+    private static byte[] readField(int fieldSize, ByteBuffer buffer) {
+        byte[] arr = new byte[fieldSize];
+        buffer.get(arr, 0, fieldSize);
+        return arr;
     }
     public static Long countChecksum(byte[] datagramMessage){
         logger.debug("Datagram's length to count checksum: {}", datagramMessage.length);
