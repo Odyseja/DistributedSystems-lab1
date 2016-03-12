@@ -15,14 +15,22 @@ import pl.agh.distributedSystems.lab1.chat.message.MessageWrapper;
 public class MulticastUdpClient {
 	private static final Logger log = LoggerFactory.getLogger(MulticastUdpClient.class);
 
-	public static void main(String[] args) throws UnknownHostException {
+	public static void main(String[] args) {
         ExecutorService executor = Executors.newFixedThreadPool(3);
         if (args.length != 3) {
             System.out.println("Input parameters: <IP> <port> <login>");
             System.exit(-1);
+        } else if(args[2].length()>6){
+            System.out.println("Your login is too long! It must contain max 6 characters.");
         }
         Console c = System.console();
-        InetAddress groupAddress = InetAddress.getByName(args[0]);
+        InetAddress groupAddress = null;
+        try {
+            groupAddress = InetAddress.getByName(args[0]);
+        } catch (UnknownHostException e) {
+            log.error("No such host: {}", args[0]);
+            System.exit(-1);
+        }
         int port = Integer.parseInt(args[1]);
         String login = args[2];
 		try(MulticastSocket socket = new MulticastSocket(port)) {
@@ -31,6 +39,10 @@ public class MulticastUdpClient {
             executor.submit(listener);
             while(true){
                 String text = c.readLine("");
+                if(text.length()>20){
+                    System.out.println("Your message is too long, only first 20 characters will be send!");
+                    text = text.substring(0, 20);
+                }
                 Message message = new Message();
                 message.setData(text);
                 message.setNick(login);
