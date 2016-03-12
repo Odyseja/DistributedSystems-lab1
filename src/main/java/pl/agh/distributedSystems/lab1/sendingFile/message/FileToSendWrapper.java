@@ -3,7 +3,7 @@ package pl.agh.distributedSystems.lab1.sendingFile.message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
  */
 public class FileToSendWrapper {
     private static final Logger logger = LoggerFactory.getLogger(FileToSendWrapper.class);
+    private static final int BUFFLEN = 1024;
     private static DateFormat format;
     private static String dateFormat = "yyyy-mm-dd hh:mm:ss";
 
@@ -26,44 +27,26 @@ public class FileToSendWrapper {
      * Checksum is counted using CRC32
      * @return byte array containing information to send
      */
-    public static byte[] wrapMessageToByteArray(FileToSend fileToSend) throws UnsupportedEncodingException {
-        byte[] filename = fileToSend.getFilename().getBytes("US-ASCII");
-        byte[] file = fileToSend.getFile();
-        int dataSize = file.length+filename.length+4+4;
-        logger.debug("File to wrap: {}, size: {}", fileToSend.getFilename(), fileToSend.getFile().length);
+    public static byte[] wrapFilenameToByteArray(String filename) throws UnsupportedEncodingException {
+        byte[] filenameArr = filename.getBytes("US-ASCII");
+        int dataSize = filenameArr.length+4;
+        logger.debug("File to wrap: {}", filename);
 
         ByteBuffer buffer = ByteBuffer.allocate(dataSize);
-        buffer.putInt(filename.length);
-        buffer.put(filename);
-        buffer.putInt(file.length);
-        buffer.put(file);
-        logger.debug("Wrapped fileToSend: {}", fileToSend.toString());
+        buffer.putInt(filenameArr.length);
+        buffer.put(filenameArr);
         return buffer.array();
     }
-    public static FileToSend unwrapMessageFromByteArray(byte[] givenDatagram) {
-        logger.debug("Datagram to unwrap length: {}", givenDatagram.length);
-        int fieldSize;
-        byte[] filename;
-        byte[] file;
 
-        ByteBuffer buffer = ByteBuffer.wrap(givenDatagram);
-        buffer.position(0);
-
-        fieldSize = buffer.getInt();
-        logger.debug("Filename size: {}", fieldSize);
-        filename=readField(fieldSize, buffer);
-
-        fieldSize = buffer.getInt();
-        logger.debug("File size: {}", fieldSize);
-        file = readField(fieldSize, buffer);
-
-        FileToSend fileToSend = new FileToSend(new String(filename), file);
-        logger.debug("Unwrapped fileToSend: {}", fileToSend.getFilename());
-        return fileToSend;
-    }
-    private static byte[] readField(int fieldSize, ByteBuffer buffer) {
-        byte[] arr = new byte[fieldSize];
-        buffer.get(arr, 0, fieldSize);
-        return arr;
+    public static void sendFile(File file, OutputStream out) throws IOException {
+        byte[] dataChunk = new byte[BUFFLEN+1];
+        try(BufferedInputStream buffIn = new BufferedInputStream(new FileInputStream(file))){
+            int size = 0;
+            while((size=buffIn.read(dataChunk, 0, BUFFLEN))>0){
+                System.out.println("Send size: "+size);
+                dataChunk[size]=0;
+                out.write(dataChunk, 0, size);
+            }
+        }
     }
 }
