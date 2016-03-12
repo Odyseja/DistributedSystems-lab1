@@ -11,8 +11,8 @@ import java.text.SimpleDateFormat;
 /**
  * Created by Ola on 2016-03-10.
  */
-public class MessageWrapper {
-    private static final Logger logger = LoggerFactory.getLogger(MessageWrapper.class);
+public class FileToSendWrapper {
+    private static final Logger logger = LoggerFactory.getLogger(FileToSendWrapper.class);
     private static DateFormat format;
     private static String dateFormat = "yyyy-mm-dd hh:mm:ss";
 
@@ -26,21 +26,21 @@ public class MessageWrapper {
      * Checksum is counted using CRC32
      * @return byte array containing information to send
      */
-    public static byte[] wrapMessageToByteArray(Message message) throws UnsupportedEncodingException {
-        byte[] filename = message.getFilename().getBytes("US-ASCII");
-        byte[] file = message.getFile();
+    public static byte[] wrapMessageToByteArray(FileToSend fileToSend) throws UnsupportedEncodingException {
+        byte[] filename = fileToSend.getFilename().getBytes("US-ASCII");
+        byte[] file = fileToSend.getFile();
         int dataSize = file.length+filename.length+4+4;
-        logger.debug("File to wrap: {}, size: {}", message.getFilename(), message.getFile().length);
+        logger.debug("File to wrap: {}, size: {}", fileToSend.getFilename(), fileToSend.getFile().length);
 
         ByteBuffer buffer = ByteBuffer.allocate(dataSize);
         buffer.putInt(filename.length);
         buffer.put(filename);
         buffer.putInt(file.length);
         buffer.put(file);
-        logger.debug("Wrapped message: {}", message.toString());
+        logger.debug("Wrapped fileToSend: {}", fileToSend.toString());
         return buffer.array();
     }
-    public static Message unwrapMessageFromByteArray(byte[] givenDatagram) {
+    public static FileToSend unwrapMessageFromByteArray(byte[] givenDatagram) {
         logger.debug("Datagram to unwrap length: {}", givenDatagram.length);
         int fieldSize;
         byte[] filename;
@@ -57,9 +57,9 @@ public class MessageWrapper {
         logger.debug("File size: {}", fieldSize);
         file = readField(fieldSize, buffer);
 
-        Message message = new Message(new String(filename), file);
-        logger.debug("Unwrapped message: {}", message.getFilename());
-        return message;
+        FileToSend fileToSend = new FileToSend(new String(filename), file);
+        logger.debug("Unwrapped fileToSend: {}", fileToSend.getFilename());
+        return fileToSend;
     }
     private static byte[] readField(int fieldSize, ByteBuffer buffer) {
         byte[] arr = new byte[fieldSize];

@@ -7,17 +7,17 @@ import java.io.File;
 import java.io.IOException;
 
 @Data
-public class Message {
+public class FileToSend {
 	private String filename;
     private byte[] file;
 
-    public Message(){
+    public FileToSend(){
     }
-	public Message(File file) throws IOException {
+	public FileToSend(File file) throws IOException {
         this.filename = file.getName();
         this.file = FileUtils.readFileToByteArray(file);
     }
-    public Message(String filename, byte[] file){
+    public FileToSend(String filename, byte[] file){
         this.file=file;
         this.filename=filename;
     }
