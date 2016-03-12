@@ -43,7 +43,7 @@ public class FileToSendWrapper {
         try(BufferedInputStream buffIn = new BufferedInputStream(new FileInputStream(file))){
             int size = 0;
             while((size=buffIn.read(dataChunk, 0, BUFFLEN))>0){
-                System.out.println("Send size: "+size);
+                System.out.println("Chunk's size: "+size);
                 dataChunk[size]=0;
                 out.write(dataChunk, 0, size);
             }
