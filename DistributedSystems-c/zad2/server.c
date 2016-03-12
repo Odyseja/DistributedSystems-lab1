@@ -11,7 +11,7 @@
 #include <byteswap.h>
 #include <signal.h>
 
-#define BUFLEN 1000000
+#define BUFLEN 1024
 
 int sock_fd, cli_fd;
 
@@ -68,10 +68,8 @@ int getFilenameSize(char recvline[]){
 char* getFilename(char recvline[], int filenameSize){
     char* buffer = malloc(sizeof(char)*filenameSize);
     for(int i=0; i<filenameSize; i++){
-        printf("%c", recvline[i+4]);
         buffer[i]=recvline[i+4];
     }
-    printf("\n");
     return buffer;
 }
 
@@ -83,13 +81,14 @@ static void catch_function(int signo){
 }
 
 void getAndSaveFile(){
-    char recvline[BUFLEN];
+    char recvline[BUFLEN+1];
     int len=recv(cli_fd, recvline, BUFLEN, 0);
-    printf("received bytes: %d\n", len);
+    printf("Received bytes: %d\n", len);
     recvline[len] = 0;
     int filenameSize = getFilenameSize(recvline);
     printf("Filename size: %d\n", filenameSize);
     char* filename = getFilename(recvline, filenameSize);
+    printf("Filename: %s\n", filename);
 
     if(access(filename, F_OK)!=-1){
         remove(filename);
