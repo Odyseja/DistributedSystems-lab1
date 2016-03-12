@@ -76,7 +76,7 @@
                                 <manifest>
                                     <addClasspath>true</addClasspath>
                                     <classpathPrefix>lib</classpathPrefix>
-                                    <mainClass>pl.agh.distributedSystems.lab1.sendingFile.TcpServer</mainClass>
+                                    <mainClass>pl.agh.distributedSystems.lab1.sendingFile.TcpSender</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>

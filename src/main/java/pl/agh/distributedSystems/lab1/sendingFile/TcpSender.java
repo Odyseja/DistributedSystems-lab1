@@ -16,8 +16,8 @@ import java.net.UnknownHostException;
 /**
  * Created by Ola on 2016-03-12.
  */
-public class TcpServer {
-    private static final Logger log = LoggerFactory.getLogger(TcpServer.class);
+public class TcpSender {
+    private static final Logger log = LoggerFactory.getLogger(TcpSender.class);
     public static void main(String[] args){
         if (args.length != 2) {
             System.out.println("Input parameters: <IP> <port>");
