@@ -2,4 +2,5 @@
 /out
 /bin
 .idea
-# Created by .ignore support plugin (hsz.mobi)
+DistributedSystems-c/zad1/client
+DistributedSystems-c/zad2/server
