@@ -46,12 +46,37 @@
                         </goals>
                         <phase>package</phase>
                         <configuration>
+                            <finalName>zad3</finalName>
                             <classifier>chat</classifier>
+                            <excludes>
+                                <exclude>src/main/java/pl/agh/distributedSystems/lab1/sendingFile</exclude>
+                            </excludes>
                             <archive>
                                 <manifest>
                                     <addClasspath>true</addClasspath>
                                     <classpathPrefix>lib</classpathPrefix>
                                     <mainClass>pl.agh.distributedSystems.lab1.chat.MulticastUdpClient</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>fileSender</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <finalName>zad2</finalName>
+                            <classifier>fileSender</classifier>
+                            <excludes>
+                                <exclude>src/main/java/pl/agh/distributedSystems/lab1/chat</exclude>
+                            </excludes>
+                            <archive>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <classpathPrefix>lib</classpathPrefix>
+                                    <mainClass>pl.agh.distributedSystems.lab1.sendingFile.TcpServer</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>
@@ -84,7 +109,11 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.18</version>
         </dependency>
-
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
     </dependencies>
 
     

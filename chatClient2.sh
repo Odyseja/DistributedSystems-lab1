@@ -1,1 +1,1 @@
-sudo java -jar target/distributedSystems-1.0-SNAPSHOT-chat.jar 228.5.6.7 80 Ola
+sudo java -jar target/zad3-chat.jar 228.5.6.7 80 Ola

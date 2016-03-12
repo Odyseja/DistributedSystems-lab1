@@ -10,7 +10,7 @@ import static org.junit.Assert.fail;
 /**
  * Created by Ola on 2016-03-09.
  */
-public class MessageTest {
+public class FileToSendTest {
     @Test
     public void messageTest()  {
         Message message = new Message("Ola", "Java");
