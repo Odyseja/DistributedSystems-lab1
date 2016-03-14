@@ -48,9 +48,6 @@
                         <configuration>
                             <finalName>zad3</finalName>
                             <classifier>chat</classifier>
-                            <excludes>
-                                <exclude>src/main/java/pl/agh/distributedSystems/lab1/sendingFile</exclude>
-                            </excludes>
                             <archive>
                                 <manifest>
                                     <addClasspath>true</addClasspath>
@@ -69,14 +66,29 @@
                         <configuration>
                             <finalName>zad2</finalName>
                             <classifier>fileSender</classifier>
-                            <excludes>
-                                <exclude>src/main/java/pl/agh/distributedSystems/lab1/chat</exclude>
-                            </excludes>
                             <archive>
                                 <manifest>
                                     <addClasspath>true</addClasspath>
                                     <classpathPrefix>lib</classpathPrefix>
                                     <mainClass>pl.agh.distributedSystems.lab1.sendingFile.TcpSender</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>pi</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <finalName>zad1</finalName>
+                            <classifier>pi</classifier>
+                            <archive>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <classpathPrefix>lib</classpathPrefix>
+                                    <mainClass>pl.agh.distributedSystems.lab1.pi.TcpServer</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>

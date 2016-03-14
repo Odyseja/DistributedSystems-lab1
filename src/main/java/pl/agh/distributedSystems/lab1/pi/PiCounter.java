@@ -1,4 +1,4 @@
-package pl.agh.distributedSystems.lab1.pl.agh.distributedSystems.lab1.pi;
+package pl.agh.distributedSystems.lab1.pi;
 
 import java.util.PrimitiveIterator;
 
